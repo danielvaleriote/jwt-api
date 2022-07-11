@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsnd --respawn ./app.ts"
+    "dev": "nodemon ./src/app.js",
+    "start": "node ./src/app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Daniel Valeriote",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -16,11 +17,9 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.4.0",
-    "typescript": "^4.7.4"
+    "mongoose": "^6.4.0"
   },
   "devDependencies": {
-    "@types/express": "^4.17.13",
-    "ts-node-dev": "^2.0.0"
+    "nodemon": "^2.0.19"
   }
 }
