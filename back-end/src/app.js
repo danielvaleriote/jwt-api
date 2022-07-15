@@ -1,9 +1,17 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const User = require("./Models/User");
-const {hash} = require("bcryptjs");
-const {createAccessToken, createRefreshToken} = require("./Helpers/tokens");
+const { hash } = require("bcryptjs");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
+
+const {
+	createAccessToken,
+	createRefreshToken, 
+	sendAccessToken, 
+	sendRefreshToken
+} = require("./Helpers/tokens");
+
 const app = express();
 
 mongoose.connect(process.env.DB_URL)
@@ -14,6 +22,7 @@ const port = process.env.PORT || 3500;
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.use(cookieParser());
 
 app.post("/register", async (req, res) => {
 	const {username, password} = req.body;
@@ -24,13 +33,11 @@ app.post("/register", async (req, res) => {
 		await User.create({username, password: await hash(password, 10)});
 
 		res.sendStatus(201);
-
 	} catch(err) {
 			console.error(err.message);
 
 			if(err.code == 11000) return res.status(409).json({msg:"Username already registered."});
 			res.sendStatus(500);
-			
 	};
 });
 
