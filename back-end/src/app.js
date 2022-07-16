@@ -1,6 +1,6 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const User = require("./Models/User");
+const connectToDB = require("./Config/database/connect");
 const { hash, compare } = require("bcryptjs");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
@@ -14,11 +14,9 @@ const {
 
 const app = express();
 
-mongoose.connect(process.env.DB_URL)
-	.then(() => console.info("Connected to the database."))
-	.catch(err => console.error(err.message))
-
 const port = process.env.PORT || 3500;
+
+connectToDB();
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -33,9 +31,9 @@ app.post("/register", async (req, res) => {
 
 		res.sendStatus(201);
 	} catch(err) {
-		console.error(err.message);
-
 		if(err.code == 11000) return res.status(409).json({msg:"Username already registered."});
+
+		console.error(err.message);
 		res.sendStatus(500);
 	};
 });
