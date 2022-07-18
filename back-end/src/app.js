@@ -62,6 +62,11 @@ app.post("/login", async (req, res) => {
 
 		res.sendStatus(500);
 	}
-})
+});
+
+app.get("/logout", (_, res) => {
+	res.clearCookie("rt", {path: "/refresh_token"});
+	res.sendStatus(200);
+});
 
 app.listen(port, () => console.info(`Server is listening to ${port}.`));
