@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("./Models/User");
 const connectToDB = require("./Config/database/connect");
 const { authenticateToken } = require("./Middlewares/auth");
+const { verify } = require("jsonwebtoken");
 const { hash, compare } = require("bcryptjs");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
@@ -58,6 +59,8 @@ app.post("/login", async (req, res) => {
 		// Sends json with access token
 		sendAccessToken(res, accessToken);
 
+		await User.findByIdAndUpdate(user.id, { refreshToken });
+
 	} catch(err) {
 		console.error(err.message);
 
@@ -68,6 +71,25 @@ app.post("/login", async (req, res) => {
 app.get("/logout", (_, res) => {
 	res.clearCookie("rt", {path: "/refresh_token"});
 	res.sendStatus(200);
+});
+
+app.post("/refresh_token", async (req, res) => {
+	const { rt } = req.cookies;
+	if(!rt) return res.sendStatus(403);
+
+	try {
+		const { id } = verify(rt, process.env.REFRESH_TOKEN_SECRET);
+		const user = await User.findById(id, "-password");
+
+		if(user.refreshToken !== rt) throw new Error();
+
+		sendAccessToken(res, createAccessToken(id));
+		
+	} catch(err) {
+		console.error(err.message);
+
+		res.sendStatus(403);
+	};
 });
 
 app.listen(port, () => console.info(`Server is listening to ${port}.`));
