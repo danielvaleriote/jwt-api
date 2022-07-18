@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require("./Models/User");
 const connectToDB = require("./Config/database/connect");
-const { authenticateToken } = require("./Middlewares/auth");
+const { authenticateTokenAndGetUser, restrictSection } = require("./Middlewares/auth");
 const { verify } = require("jsonwebtoken");
 const { hash, compare } = require("bcryptjs");
 const cookieParser = require("cookie-parser");
