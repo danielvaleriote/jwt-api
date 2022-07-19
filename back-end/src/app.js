@@ -5,6 +5,7 @@ const { authenticateTokenAndGetUser, restrictSection } = require("./Middlewares/
 const { verify } = require("jsonwebtoken");
 const { hash, compare } = require("bcryptjs");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 require("dotenv").config();
 
 const {
@@ -23,6 +24,7 @@ connectToDB();
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
 
 app.post("/register", async (req, res) => {
 	const {username, password} = req.body;
@@ -59,7 +61,8 @@ app.post("/login", async (req, res) => {
 		// Sends json with access token
 		sendAccessToken(res, accessToken);
 
-		await User.findByIdAndUpdate(user.id, { refreshToken });
+		user.refreshToken = refreshToken;
+		await user.save();
 
 	} catch(err) {
 		console.error(err.message);
