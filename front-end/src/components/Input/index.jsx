@@ -5,8 +5,8 @@ const Input = ({type, placeholder, label, required, handleChange}) => {
 		label ? 
 		
 		<label className="input-label">
-			{label}
-				<input type={type || "text"} placeholder={placeholder || ""} className="input" required={required} onChange={handleChange} autoComplete="off"/>
+			{label}<br />
+			<input type={type || "text"} placeholder={placeholder || ""} className="input" required={required} onChange={handleChange} autoComplete="off"/>
 		</label> : 
 
 		<input type={type || "text"} placeholder={placeholder || ""} className="input"  required={required} onChange={handleChange} autoComplete="off"/>
