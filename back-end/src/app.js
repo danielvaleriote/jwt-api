@@ -27,15 +27,18 @@ app.use(cookieParser());
 app.use(cors());
 
 app.post("/register", async (req, res) => {
-	const {username, password} = req.body;
-	if(!username || !password) return res.sendStatus(422);
+	const {email, password} = req.body;
+	if(!email || !password) return res.sendStatus(422);
+
+	const isEmailValid = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+	if(!isEmailValid) return res.sendStatus(422);
 
 	try {
-		await User.create({username, password: await hash(password, 10)});
+		await User.create({email, password: await hash(password, 10)});
 
 		res.sendStatus(201);
 	} catch(err) {
-		if(err.code == 11000) return res.status(409).json({msg:"Username already registered."});
+		if(err.code == 11000) return res.status(409).json({msg:"email already registered."});
 
 		console.error(err.message);
 		res.sendStatus(500);
@@ -43,11 +46,11 @@ app.post("/register", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-	const {username, password} = req.body;
-	if(!username || !password) return res.sendStatus(422);
+	const {email, password} = req.body;
+	if(!email || !password) return res.sendStatus(422);
 
 	try {
-		const user = await User.findOne({username})
+		const user = await User.findOne({email})
 		// Checks if user exists
 		if(!user) return res.status(404).json({msg: "User does not exist."})
 		// Checks if password is correct
