@@ -19,8 +19,9 @@ const Login = () => {
 
 		email.trim();
 
-		sendCredentials("/login", {email, password})
-			.then(res => {
+		sendCredentials("login", {email, password})
+			.then(({ data }) => {
+
 				setEmail("");
 				setPassword("");
 			})

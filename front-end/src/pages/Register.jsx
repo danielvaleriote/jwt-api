@@ -19,7 +19,7 @@ const Register = () => {
 
 		email.trim();
 
-		sendCredentials("/register", { email, password })
+		sendCredentials("register", { email, password })
 			.then((res) => {
 				showModal(modal, setModal, "Cadastrado com sucesso.");
 

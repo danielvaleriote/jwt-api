@@ -1,3 +1,2 @@
-import axios from "axios";
-
-export default (route, credentials) => axios.post(`${import.meta.env.VITE_API_URL}${route}`, credentials);
+import api from "../api/axios";
+export default (route, credentials) => api.post(route, credentials);
