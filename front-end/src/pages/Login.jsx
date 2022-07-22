@@ -16,7 +16,25 @@ const Login = () => {
 
 		email.trim();
 
-		sendCredentials("/login", {email, password});
+		sendCredentials("/login", {email, password})
+			.then(res => {
+				console.log(res);
+			})
+			.catch(err => {
+				let errMessage;
+				switch(err.response.status) {
+					case 404:
+						errMessage = "Email não cadastrado.";
+						break;
+					case 403:
+						errMessage = "Senha incorreta.";
+						break;
+					default:
+						errMessage = "Algum erro ocorreu.";
+					};
+
+					showModal(modal, setModal, errMessage);
+			});
 	};
 
 	return (
