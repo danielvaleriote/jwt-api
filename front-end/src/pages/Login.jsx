@@ -18,7 +18,8 @@ const Login = () => {
 
 		sendCredentials("/login", {email, password})
 			.then(res => {
-				console.log(res);
+				setEmail("");
+				setPassword("");
 			})
 			.catch(err => {
 				let errMessage;
@@ -33,7 +34,8 @@ const Login = () => {
 						errMessage = "Algum erro ocorreu.";
 					};
 
-					showModal(modal, setModal, errMessage);
+				showModal(modal, setModal, errMessage, true);
+				console.error(err);
 			});
 	};
 
@@ -41,7 +43,9 @@ const Login = () => {
 		<div>
 			<CredentialsPrompt
 				handleSubmit={submitHandler}
+				email={email}
 				setEmail={setEmail}
+				password={password}
 				setPassword={setPassword}
 				role="login"
 			/>

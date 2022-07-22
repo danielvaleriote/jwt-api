@@ -5,7 +5,6 @@ import sendCredentials from "../utils/sendCredentials";
 import Modal from "../components/Modal";
 import { showModal, defaultModalState } from "../utils/modal";
 
-
 const Register = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -19,8 +18,10 @@ const Register = () => {
 
 		sendCredentials("/register", { email, password })
 			.then((res) => {
-				console.log(res);
 				showModal(modal, setModal, "Cadastrado com sucesso.");
+
+				setEmail("");
+				setPassword("");
 			})
 			.catch(err => {
 				let errorMessage;
@@ -43,12 +44,14 @@ const Register = () => {
 
 	return (
 		<div>
-			<CredentialsPrompt
-				handleSubmit={submitHandler} 
-				setEmail={setEmail} 
-				setPassword={setPassword} 
-				role="register" 
-			/>
+				<CredentialsPrompt
+					handleSubmit={submitHandler} 
+					email={email}
+					setEmail={setEmail}
+					password={password}
+					setPassword={setPassword} 
+					role="register"
+				/>
 			{ modal.isOpen && <Modal message={modal.message} isError={modal.isError}/> }
 		</div>
 	);

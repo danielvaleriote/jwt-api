@@ -3,7 +3,7 @@ import Input from "../Input";
 import Button from "../Button";
 import { Link } from "react-router-dom"
 
-const CredentialsPrompt = ({ role, handleSubmit, setEmail, setPassword }) => {
+const CredentialsPrompt = ({ role, handleSubmit, email, setEmail, password, setPassword }) => {
 	const handleEmailInputChange = (e) => setEmail(e.target.value);
 	const handlePasswordInputChange = (e) => setPassword(e.target.value);
 
@@ -29,13 +29,15 @@ const CredentialsPrompt = ({ role, handleSubmit, setEmail, setPassword }) => {
 	}
 	
 	return (
-		<form className='credentials-prompt' onSubmit={handleSubmit} >
-			{ title && <h1 className="credentials-title">{title}</h1> }
-			<Input type="text" placeholder="Digite o email" label="Email:" required={true} handleChange={handleEmailInputChange}/>
-			<Input type="password" placeholder="Digite a senha" label="Senha:" required={true} handleChange={handlePasswordInputChange} />
-			<Button>{buttonText}</Button>
-			{linkTo && <Link to={"/" + linkTo} className="credentials-link">{linkText}</Link> }
-		</form>
+		<div className="credentials-container">
+			<form className='credentials-prompt' onSubmit={handleSubmit} >
+				{ title && <h1 className="credentials-title">{title}</h1> }
+				<Input type="email" placeholder="Digite o email" label="Email:" required={true} handleChange={handleEmailInputChange} value={email}/>
+				<Input type="password" placeholder="Digite a senha" label="Senha:" required={true} handleChange={handlePasswordInputChange} value={password}/>
+				<Button>{buttonText}</Button>
+				{linkTo && <Link to={"/" + linkTo} className="credentials-link">{linkText}</Link> }
+			</form>
+		</div>
 	);
 };
 
