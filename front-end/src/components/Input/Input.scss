@@ -1,3 +1,5 @@
+@use "../variables.scss" as *;
+
 .input {
 	padding: 10px;
 	border-radius: 4px;
@@ -14,6 +16,6 @@
 }
 
 .input:focus {
-	border: 2px solid #648DE5;
-	color: #648DE5;
+	border: 2px solid $mainColor;
+	color: $mainColor;
 }

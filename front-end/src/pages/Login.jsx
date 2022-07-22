@@ -21,7 +21,12 @@ const Login = () => {
 
 	return (
 		<div>
-			<CredentialsPrompt buttonText="Registrar" handleSubmit={submitHandler} setEmail={setEmail} setPassword={setPassword} />
+			<CredentialsPrompt
+				handleSubmit={submitHandler}
+				setEmail={setEmail}
+				setPassword={setPassword}
+				role="login"
+			/>
 			{ modal.isOpen && <Modal message={modal.message} isError={modal.isError} /> }
 		</div>
 	);
