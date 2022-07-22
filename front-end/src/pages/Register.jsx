@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import CredentialsPrompt from '../components/CredentialsPrompt';
 import sendCredentials from "../utils/sendCredentials";
+import authContext from "../context/authContext";
 
 import Modal from "../components/Modal";
 import { showModal, defaultModalState } from "../utils/modal";
@@ -9,6 +10,8 @@ const Register = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [modal, setModal] = useState(defaultModalState);
+
+	const context = useContext(authContext);
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
