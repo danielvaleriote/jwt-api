@@ -56,13 +56,13 @@ app.post("/login", async (req, res) => {
 		// Checks if password is correct
 		if(!await compare(password, user.password)) return res.sendStatus(403)
 
-		const accessToken = createAccessToken(user.id);
+		const accessToken = createAccessToken(user.id, email);
 		const refreshToken = createRefreshToken(user.id);
 
 		// Sends cookie with refresh token
 		sendRefreshToken(res, refreshToken);
 		// Sends json with access token
-		sendAccessToken(res, accessToken);
+		sendAccessToken(res, accessToken, {email});
 
 		user.refreshToken = refreshToken;
 		await user.save();
@@ -89,7 +89,7 @@ app.post("/refresh_token", async (req, res) => {
 
 		if(user.refreshToken !== rt) throw new Error();
 
-		sendAccessToken(res, createAccessToken(id));
+		sendAccessToken(res, createAccessToken(id, {email: user.email}));
 		
 	} catch(err) {
 		console.error(err.message);
