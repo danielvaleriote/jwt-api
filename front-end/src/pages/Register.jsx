@@ -5,6 +5,8 @@ import authContext from "../context/authContext";
 
 import Modal from "../components/Modal";
 import { showModal, defaultModalState } from "../utils/modal";
+import { useNavigate } from "react-router-dom";
+import api from "../api/axios";
 
 const Register = () => {
 	const [email, setEmail] = useState("");
@@ -12,6 +14,7 @@ const Register = () => {
 	const [modal, setModal] = useState(defaultModalState);
 
 	const context = useContext(authContext);
+	const navigate = useNavigate();
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
