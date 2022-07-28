@@ -7,7 +7,7 @@ const sendAccessToken = (res, accessToken, user) => {
 	if(!accessToken) return;
 	
 	if(user) return res.json({accessToken, user})
-	return res.json(accessToken)
+	return res.json({accessToken})
 }
 
 const sendRefreshToken = (res, refreshToken) => {
