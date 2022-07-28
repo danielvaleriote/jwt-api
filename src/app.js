@@ -1,7 +1,6 @@
 const express = require("express");
 const User = require("./Models/User");
 const connectToDB = require("./Config/database/connect");
-const { authenticateTokenAndGetUser, restrictSection } = require("./Middlewares/auth");
 const { verify } = require("jsonwebtoken");
 const { hash, compare } = require("bcryptjs");
 const cookieParser = require("cookie-parser");
@@ -24,7 +23,7 @@ connectToDB();
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({credentials: true, origin: true}));
 
 app.post("/register", async (req, res) => {
 	const {email, password} = req.body;
