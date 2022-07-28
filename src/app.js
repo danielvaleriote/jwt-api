@@ -89,7 +89,7 @@ app.post("/refresh_token", async (req, res) => {
 
 		if(user.refreshToken !== rt) throw new Error();
 
-		sendAccessToken(res, createAccessToken(id, {email: user.email}));
+		sendAccessToken(res, createAccessToken(id), {email: user.email});
 		
 	} catch(err) {
 		console.error(err.message);

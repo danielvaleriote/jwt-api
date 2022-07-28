@@ -3,10 +3,12 @@ const {sign} = require("jsonwebtoken");
 const createAccessToken = id => id && sign({id}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "15m"});
 const createRefreshToken = id => id && sign({id}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: "7d"});
 
-const sendAccessToken = (res, accessToken) => { 
+const sendAccessToken = (res, accessToken, user) => { 
 	if(!accessToken) return res.sendStatus(500);
 	
-	return res.json({accessToken})
+	if(!user) return res.json({accessToken})
+
+	return res.json({accessToken, user})
 }
 
 const sendRefreshToken = (res, refreshToken) => {
