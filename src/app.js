@@ -62,7 +62,7 @@ app.post("/login", async (req, res) => {
 		// Sends cookie with refresh token
 		sendRefreshToken(res, refreshToken);
 		// Sends json with access token
-		sendAccessToken(res, accessToken, {email});
+		sendAccessToken(res, accessToken);
 
 		user.refreshToken = refreshToken;
 		await user.save();
