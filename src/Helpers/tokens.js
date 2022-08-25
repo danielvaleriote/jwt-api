@@ -1,18 +1,28 @@
-const {sign} = require("jsonwebtoken");
+const { sign } = require("jsonwebtoken");
 
-const createAccessToken = id => id && sign({id}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "15m"});
-const createRefreshToken = id => id && sign({id}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: "7d"});
+const createAccessToken = (id) =>
+  id && sign({ id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+const createRefreshToken = (id) =>
+  id && sign({ id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
 
-const sendAccessToken = (res, accessToken, user) => { 
-	if(!accessToken) return res.sendStatus(500);
-	
-	if(!user) return res.json({accessToken})
+const sendTokens = (res, accessToken, refreshToken, user) => {
+  if (!accessToken && !refreshToken) return res.sendStatus(500);
 
-	return res.json({accessToken, user})
-}
+  if (!user) {
+    if (accessToken && !refreshToken) return res.json({ accessToken });
+    if (!accessToken && refreshToken) return res.json({ refreshToken });
 
-const sendRefreshToken = (res, refreshToken) => {
-	if(refreshToken) res.cookie("rt", refreshToken, {path: "/refresh_token", httpOnly: true})
-}
+    return res.json({ accessToken, refreshToken });
+  }
 
-module.exports = {createAccessToken, createRefreshToken, sendAccessToken, sendRefreshToken};
+  if (accessToken && !refreshToken) return res.json({ accessToken, user });
+  if (!accessToken && refreshToken) return res.json({ refreshToken, user });
+
+  return res.json({ accessToken, refreshToken, user });
+};
+
+module.exports = {
+  createAccessToken,
+  createRefreshToken,
+  sendTokens,
+};
